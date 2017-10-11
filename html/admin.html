@@ -1,0 +1,68 @@
+<html>
+
+<head>
+
+<title>Mur'oeuvre</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript">
+
+window.onload=Pinstatus;
+
+function Pinstatus(){
+	morestatus();
+}
+
+function morestatus(){
+	setTimeout(morestatus, 2000);
+	document.getElementById("description").innerHTML = "Processing Status";
+	server = "/arduino/status/99";
+	request = new XMLHttpRequest();
+	request.onreadystatechange = updateasyncstatus;
+	request.open("GET", server, true);
+	request.send(null);
+}
+
+function updateasyncstatus(){
+if ((request.readyState == 4) && (request.status == 200))
+	{
+		result = request.responseText;
+
+		document.getElementById("description").innerHTML = result;
+	}
+}
+
+function sendmaintenance(ix,iy,iz){
+	document.getElementById("description").innerHTML = "Envoie des valeurs";
+	server = "/arduino/maintenance/" + ix + "/" + iy + "/" + iz;
+	request = new XMLHttpRequest();
+	request.onreadystatechange = updateasyncbutton;
+	request.open("GET", server, true);
+	request.send(null);
+}
+
+function updateasyncbutton(){
+
+if ((request.readyState == 4) && (request.status == 200))
+	{
+	result = request.responseText;
+	document.getElementById("description").innerHTML = result;
+	}
+}
+
+
+
+</script>
+
+</head>
+<body>
+	<form>
+		X <input type="number" name="xvalue" id="valeurx"><br>
+		Y <input type="number" name="yvalue" id="valeury"><br>
+		Z <input type="number" name="zvalue" id="valeurz"><br>
+	</form>
+
+	<button onclick="sendmaintenance(document.getElementById('valeurx').value,document.getElementById('valeury').value,document.getElementById('valeurz').value);" class="bouton">envoyer</button>
+	<br>
+	<p id="description"> - </p>
+</body>

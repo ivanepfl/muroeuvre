@@ -1,0 +1,281 @@
+<html>
+<head>
+<title>Mur'oeuvre</title><link rel="stylesheet" type="text/css" href="style.css">
+
+<script type="text/javascript">
+
+window.onload=Pinstatus;
+function Pinstatus(){
+	morestatus();
+}
+function morestatus(){
+setTimeout(morestatus, 2000);
+document.getElementById("description").innerHTML = "Processing Status";
+server = "/arduino/status/99";
+request = new XMLHttpRequest();
+request.onreadystatechange = updateasyncstatus;
+request.open("GET", server, true);
+request.send(null);
+}
+function updateasyncstatus(){
+if ((request.readyState == 4) && (request.status == 200))
+	{
+		result = request.responseText;
+		document.getElementById("description").innerHTML = result;
+		fullset = result.split("#");
+		
+		document.getElementById("status_a").innerHTML = parseInt(fullset[1]);
+		document.getElementById("status_b").innerHTML = parseInt(fullset[2]);
+		document.getElementById("status_c").innerHTML = parseInt(fullset[3]);
+		document.getElementById("status_d").innerHTML = parseInt(fullset[4]);
+		document.getElementById("status_e").innerHTML = parseInt(fullset[5]);
+		document.getElementById("status_f").innerHTML = parseInt(fullset[6]);
+		document.getElementById("status_g").innerHTML = parseInt(fullset[7]);
+		document.getElementById("status_h").innerHTML = parseInt(fullset[8]);
+	}
+}
+function sendcommand(a,b,c,d,e,f,g,h){
+	document.getElementById("description").innerHTML = "Processing Button Click";
+	server = "/arduino/misemouvement/" + a + "/" + b + "/" + c + "/"+ d + "/"+ e + "/"+ f + "/"+ g + "/"+ h ;
+	request = new XMLHttpRequest();
+	request.onreadystatechange = updateastatus;
+	request.open("GET", server, true);
+	request.send(null);
+}
+
+function sendstop(){
+	document.getElementById("description").innerHTML = "Stopping";
+	server = "/arduino/stop/" + Pin + "/" + action;
+	request = new XMLHttpRequest();
+	request.onreadystatechange = updateastatus;
+	request.open("GET", server, true);
+	request.send(null);
+}
+function updateastatus(){
+if ((request.readyState == 4) && (request.status == 200))
+	{
+	result = request.responseText;
+	document.getElementById("description").innerHTML = result;
+	}
+}
+
+function disable_form(to_disable){
+const items = document.getElementsByClassName("choix");
+for (let i = 0; i < items.length; i++) {
+    items[i].disabled = to_disable;
+}
+}
+</script>
+</head>
+<body>
+	<h1>Mur'oeuvre</h1>
+	<table>
+		<tr>
+			<td>
+				<form method="post">
+				   <p>
+					   <label for="A">Position A  </label><br />
+					   <select name="A" id="A" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_a"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="B">Position B  </label><br />
+					   <select name="B" id="B" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_b"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="C">Position C  </label><br />
+					   <select name="C" id="C" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_c"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="D">Position D  </label><br />
+					   <select name="D" id="D" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_d"> 0 </p>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="E">Position E  </label><br />
+					   <select name="E" id="E" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_e"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="F">Position F  </label><br />
+					   <select name="F" id="F" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_f"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="G">Position G  </label><br />
+					   <select name="G" id="G" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_g"> 0 </p>
+				</form>
+			</td>
+			<td>
+				<form method="post" >
+				   <p>
+					   <label for="H">Position H  </label><br />
+					   <select name="H" id="H" class="choix">
+						   <option value="0">0</option>
+						   <option value="1">1</option>
+						   <option value="2">2</option>
+						   <option value="3">3</option>
+						   <option value="4">4</option>
+						   <option value="5">5</option>
+						   <option value="6">6</option>
+						   <option value="7">7</option>
+						   <option value="8">8</option>
+						   <option value="9">9</option>
+						   <option value="10">10</option>
+						   <option value="11">11</option>
+						   <option value="12">12</option>
+					   </select>
+				   </p>
+				   <p id="status_h"> 0 </p>
+				</form>
+			</td>
+		</tr>
+	</table>
+	<br>
+
+	<label class="switch">
+		<input type="checkbox" onchange="disable_form(this.checked);">
+		<span class="slider round"></span>
+		<span class="slidername">Aléatoire</span>
+		
+	</label>
+	<button onclick="sendcommand(document.getElementById('A').value,
+	document.getElementById('B').value,
+	document.getElementById('C').value,
+	document.getElementById('D').value,
+	document.getElementById('E').value,
+	document.getElementById('F').value,
+	document.getElementById('G').value,
+	document.getElementById('H').value,);" class="bouton">Mettre en marche</button>
+	<button onclick="sendstop();" class="bouton">Arrêter</button>
+	<br>
+	<p id="description"> - </p></body>
+</html>
