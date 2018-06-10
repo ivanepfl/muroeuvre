@@ -1,0 +1,25 @@
+
+//automatically start
+
+SGP 77, 0, 1
+
+// *** Main Loop *** //
+loop:	
+	GIO 7, 0    			//read IN_7
+	COMP 1					//compare with 1
+	JC EQ, eteint
+	GIO 7, 0    			//read IN_7
+	COMP 0					//compare with 0
+	JC EQ, allume
+	WAIT TICKS, 0, 100
+	JA loop					//jump to loop
+
+
+eteint:
+	SIO 7, 2, 0
+	RETI
+
+allume:
+	SIO 7, 2, 1
+	RETI
+

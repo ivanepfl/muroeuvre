@@ -1,0 +1,55 @@
+//This programs demonstrates how to read out the status of
+//the general purpose inputs. Depending on the status of
+//Port IN_0 is motor 0 turning right (IN_0 = 0) or turning
+//left (IN_0 = 1).
+//For more details look at TMCL_reference.pdf -
+//http://www.trinamic.com/software-tools/tmcl-ide
+//
+//Before use: Restore Factory Defaults
+//(MN 19.05.2015)
+
+// *** Values that have to be adapted *** //
+amax = 50					//max. acceleration (0 ... 2047)
+vmax = 600					//max. speed (0 ... 2047)
+cmax = 100					//max. current (0 ... 255)
+
+acmax = 10					//max. acceleration (0 ... 2047)
+vcmax = 1				//max. speed (0 ... 2047)
+
+// *** Initialization / Set up axis parameter *** //
+SAP 5, 0, amax				//set max. acceleration
+SAP 6, 0, cmax    			//set max. current (0 ... 255)
+
+
+//automatically start
+
+SGP 77, 0, 1
+
+
+// *** Main Loop *** //
+loop:
+	MST 0				// STOP the motor
+	GIO 0, 0    			//read IN_0
+	COMP 1					//compare with 1
+	JC EQ, turnLeft		//if equal jump to turn left
+	GIO 1, 0    			//read IN_1
+	COMP 1					//compare with 1
+	JC EQ, turnRight		//if equal jump to turn right
+	JA loop					//jump to loop
+turnLeft:
+	GIO 1, 1    			//get 12 bit analog value of AIN_1 (0 ... 4095) and store in the accumulator
+	CALC DIV, acmax			//divide analog value by 10 and store in the accumulator
+	AAP 5, 0				//change the max acceleration (0 ... 2047) to the value stored in the accumulator
+	GIO 0, 1    			//get 12 bit analog value of AIN_0 (0 ... 4095) and store in the accumulator
+	CALC MUL, -1			//in the opposite direction
+	AAP 2, 0				//change the velocity (0 ... 2047) to the value stored in the accumulator
+	WAIT TICKS, 0, 50
+	JA loop					//jump to loop
+turnRight:
+	GIO 1, 1    			//get 12 bit analog value of AIN_1 (0 ... 4095) and store in the accumulator
+	CALC DIV, acmax			//divide analog value by 10 and store in the accumulator
+	AAP 5, 0				//change the max acceleration (0 ... 2047) to the value stored in the accumulator
+	GIO 0, 1    			//get 12 bit analog value of AIN_0 (0 ... 4095) and store in the accumulator
+	AAP 2, 0				//change the velocity (0 ... 2047) to the value stored in the accumulator
+	WAIT TICKS, 0, 50
+	JA loop					//jump to loop
